@@ -5,10 +5,11 @@ import { GamesModule } from './games/games.module';
 import { ConfigModule } from '@nestjs/config';
 
 import config from './config';
+import { DatabaseModule } from './database/database.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
-    GamesModule,
     ConfigModule.forRoot({
       envFilePath: '.env',
       load: [config],
@@ -19,8 +20,10 @@ import config from './config';
         DATABASE_PORT: Joi.number().required(),
       }),
     }),
+    GamesModule,
+    DatabaseModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}

@@ -35,33 +35,32 @@ export class GamesController {
     @Query('publisher') publisher: string,
     @Query('s') s: string,
   ) {
-    const apiKey = this.configService.apiKey;
-    return [];
+    return this.gamesService.findAll();
   }
-
-  @ApiOperation({ summary: 'Create a game' })
-  @Post('/')
-  @HttpCode(HttpStatus.CREATED)
-  create(@Body() payload: CreateGameDTO) {
-    // return this.gamesService.create(payload);
-  }
-
+  //
+  // @ApiOperation({ summary: 'Create a game' })
+  // @Post('/')
+  // @HttpCode(HttpStatus.CREATED)
+  // create(@Body() payload: CreateGameDTO) {
+  //   // return this.gamesService.create(payload);
+  // }
+  //
   @ApiOperation({ summary: 'Get a game' })
   @Get('/:id')
   get(@Param('id') id: string) {
     // return this.gamesService.create(payload);
-    return id
+    return this.gamesService.findOne(id);
   }
-
-  @ApiOperation({ summary: 'Update a game' })
-  @Put('/:id')
-  update(@Param('id') id: string, @Body() payload: UpdateGameDTO) {
-    return { ...payload, id };
-  }
-
-  @ApiOperation({ summary: 'Delete a game' })
-  @Delete('/:id')
-  delete(@Param('id') id: string) {
-    return this.gamesService.remove(id);
-  }
+  //
+  // @ApiOperation({ summary: 'Update a game' })
+  // @Put('/:id')
+  // update(@Param('id') id: string, @Body() payload: UpdateGameDTO) {
+  //   return { ...payload, id };
+  // }
+  //
+  // @ApiOperation({ summary: 'Delete a game' })
+  // @Delete('/:id')
+  // delete(@Param('id') id: string) {
+  //   return this.gamesService.remove(id);
+  // }
 }
