@@ -1,9 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
+import { Publisher } from './publisher.entity';
 
 @Schema()
 export class Game extends Document {
-  @Prop({ required: true })
+  @Prop({ required: true, index: true })
   title: string;
 
   @Prop({ type: Number })
@@ -14,6 +15,9 @@ export class Game extends Document {
 
   @Prop({ type: Date })
   releaseDate: string;
+
+  @Prop({ type: Types.ObjectId, ref: Publisher.name })
+  publisher: Publisher | Types.ObjectId;
 }
 
 export const GameSchema = SchemaFactory.createForClass(Game);

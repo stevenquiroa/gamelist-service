@@ -1,52 +1,56 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Query } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
 
 import { Game } from '../entities/game.entity';
-import { CreateGameDTO, UpdateGameDTO } from '../dtos/game.dto';
+import { CreateGameDTO, FilterGamesDTO, UpdateGameDTO } from '../dtos/game.dto';
 
 @Injectable()
 export class GamesService {
   constructor(@InjectModel(Game.name) private gameModel: Model<Game>) {}
 
-  findAll() {
-    return this.gameModel.find().exec();
+  findAll(fields: FilterGamesDTO) {
+    const filters: FilterQuery<Game> = {};
+    const { limit = 30, offset = 0, publisher, s } = fields;
+
+    if (publisher) {
+      filters.publisher = publisher;
+    }
+
+    if (s) {
+      filters.title = s;
+    }
+
+    return this.gameModel.find(filters).populate('publisher').skip(offset).limit(limit).exec();
   }
 
   async findOne(id: string) {
-    const game = await this.gameModel.findById(id).exec();
+    const game = await this.gameModel.findOne({ _id: id }).exec();
     if (!game) {
       throw new NotFoundException(`Game #${id} not found`);
     }
     return game;
   }
 
-  // create(data: CreateGameDTO) {
-  //   this.counterId = `${this.counterId}1`;
-  //   const newGame = {
-  //     id: this.counterId,
-  //     ...data,
-  //   };
-  //   this.games.push(newGame);
-  //   return newGame;
-  // }
-  //
-  // update(id: string, changes: UpdateGameDTO) {
-  //   const game = this.findOne(id);
-  //   const index = this.games.findIndex((item) => item.id === id);
-  //   this.games[index] = {
-  //     ...game,
-  //     ...changes,
-  //   };
-  //   return this.games[index];
-  // }
-  //
-  // remove(id: string) {
-  //   const index = this.games.findIndex((item) => item.id === id);
-  //   if (index === -1) {
-  //     throw new NotFoundException(`Game #${id} not found`);
-  //   }
-  //   this.games.splice(index, 1);
-  //   return id;
-  // }
+  create(data: CreateGameDTO) {
+    const newGame = new this.gameModel(data);
+    return newGame.save();
+  }
+
+  update(id: string, changes: UpdateGameDTO) {
+    const game = this.gameModel.findByIdAndUpdate(
+      id,
+      { $set: changes },
+      { new: true },
+    );
+    if (!game) {
+      throw new NotFoundException(`Game #${id} not found`);
+    }
+
+    return game;
+  }
+
+  remove(id: string) {
+    return this.gameModel.findByIdAndDelete(id);
+  }
 }
