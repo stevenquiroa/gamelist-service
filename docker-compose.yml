@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.8'
 
 services:
   mongo:
@@ -8,3 +8,21 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: root
     ports:
       - 27017:27017
+  dev:
+    build:
+      context: .
+      target: development
+      dockerfile: ./Dockerfile
+    command: npm run start:dev
+    links:
+      - mongo
+    depends_on:
+      - mongo
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+networks:
+  default:
