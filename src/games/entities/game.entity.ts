@@ -11,7 +11,7 @@ export class Game extends Document {
   price: number;
 
   @Prop({ type: [{ type: String }] })
-  tags: Types.Array<string>;
+  tags: string[];
 
   @Prop({ type: Date })
   releaseDate: string;

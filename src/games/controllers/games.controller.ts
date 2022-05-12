@@ -22,10 +22,7 @@ import { MongoIdPipe } from '../../common/mongo-id.pipe';
 @ApiTags('games')
 @Controller('games')
 export class GamesController {
-  constructor(
-    private gamesService: GamesService,
-    @Inject(config.KEY) private configService: ConfigType<typeof config>,
-  ) {}
+  constructor(private gamesService: GamesService) {}
 
   @ApiOperation({ summary: 'List of games' })
   @Get('/')

@@ -5,7 +5,6 @@ import {
   Body,
   HttpCode,
   HttpStatus,
-  Inject,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ConfigType } from '@nestjs/config';
@@ -17,10 +16,7 @@ import { PublishersService } from '../services/publishers.service';
 @ApiTags('publisher')
 @Controller('publishers')
 export class PublishersController {
-  constructor(
-    private publishersService: PublishersService,
-    @Inject(config.KEY) private configService: ConfigType<typeof config>,
-  ) {}
+  constructor(private publishersService: PublishersService) {}
 
   @ApiOperation({ summary: 'List of publishers' })
   @Get('/')

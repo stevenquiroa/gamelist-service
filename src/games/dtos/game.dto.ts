@@ -42,20 +42,20 @@ export class FilterGamesDTO {
   @IsOptional()
   @IsPositive()
   @ApiProperty()
-  limit: number;
+  limit?: number;
 
   @IsOptional()
   @Min(0)
   @ApiProperty()
-  offset: number;
+  offset?: number;
 
   @IsOptional()
   @IsMongoId()
   @ApiProperty()
-  publisher: string;
+  publisher?: string;
 
   @IsOptional()
   @IsString()
   @ApiProperty()
-  s: string;
+  s?: string;
 }
