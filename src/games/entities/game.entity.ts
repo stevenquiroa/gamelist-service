@@ -10,8 +10,8 @@ export class Game extends Document {
   @Prop({ type: Number })
   price: number;
 
-  @Prop({ type: Array })
-  tags: string[];
+  @Prop({ type: [{ type: String }] })
+  tags: Types.Array<string>;
 
   @Prop({ type: Date })
   releaseDate: string;
