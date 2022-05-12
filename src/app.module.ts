@@ -2,11 +2,9 @@ import * as Joi from 'joi';
 import { Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 
-
+import config from './config';
 import { AppService } from './app.service';
 import { GamesModule } from './games/games.module';
-
-import config from './config';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { AppController } from './app.controller';
