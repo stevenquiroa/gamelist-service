@@ -1,12 +1,11 @@
 import * as dayjs from 'dayjs';
-import { Injectable, NotFoundException, Query } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Cron } from '@nestjs/schedule';
 import { FilterQuery, Model } from 'mongoose';
 
 import { Game } from '../entities/game.entity';
 import { CreateGameDTO, FilterGamesDTO, UpdateGameDTO } from '../dtos/game.dto';
-import { response } from 'express';
 
 @Injectable()
 export class GamesService {
@@ -80,7 +79,7 @@ export class GamesService {
         games.map((game) => {
           const newPrice = game.price * (1 - 0.2);
           game.price = Math.round(newPrice * 100) / 100;
-          game.tags.addToSet(offerTag);
+          game.tags.push(offerTag);
           return game.save();
         }),
       );
